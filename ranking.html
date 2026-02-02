@@ -2,54 +2,95 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Ranking Venón | Control Total</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ranking | VENÓN CLAN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { background: #070707; color: white; font-family: 'Inter', sans-serif; text-align: center; padding-top: 50px; }
-        .card { background: #111; border: 2px solid #b30000; border-radius: 15px; display: inline-block; padding: 30px; min-width: 320px; box-shadow: 0 0 20px rgba(179,0,0,0.3); }
-        h1 { font-family: 'Orbitron'; color: #d4af37; margin-bottom: 30px; font-size: 1.5rem; }
-        .player-row { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #222; font-size: 1.1rem; }
-        .elo { color: #00ffcc; font-family: 'Orbitron'; font-weight: bold; }
-        .update-tag { font-size: 0.7rem; color: #555; margin-top: 20px; }
+        :root { --red: #b30000; --gold: #d4af37; --bg: #070707; }
+        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: 40px auto; background: #111; border: 1px solid #333; border-radius: 12px; padding: 20px; box-shadow: 0 0 30px rgba(179,0,0,0.2); }
+        h1 { font-family: 'Orbitron'; color: var(--gold); text-align: center; text-transform: uppercase; border-bottom: 2px solid var(--red); padding-bottom: 15px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { color: var(--red); font-family: 'Orbitron'; text-align: left; padding: 10px; border-bottom: 2px solid #222; font-size: 0.8rem; }
+        td { padding: 12px 10px; border-bottom: 1px solid #222; font-size: 0.95rem; }
+        .name { font-weight: bold; color: #fff; }
+        .elo { font-family: 'Orbitron'; color: #00ffcc; font-weight: bold; text-align: right; }
+        .status-loading { font-size: 0.7rem; color: #666; text-align: center; margin-top: 20px; }
+        .btn-insights { color: var(--gold); text-decoration: none; border: 1px solid var(--gold); padding: 3px 7px; border-radius: 4px; font-size: 0.7rem; }
+        .btn-insights:hover { background: var(--gold); color: black; }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <h1>RANKING VENÓN CLAN</h1>
-    <div id="tabla-ranking">Cargando datos desde el cuartel general...</div>
-    <div class="update-tag">Sincronizado vía Google Cloud</div>
+<div class="container">
+    <h1>Ranking de Guerreros Venón</h1>
+    <table id="ranking-table">
+        <thead>
+            <tr>
+                <th>GUERRERO</th>
+                <th style="text-align: right;">ELO 1V1</th>
+                <th style="text-align: center;">LINK</th>
+            </tr>
+        </thead>
+        <tbody id="player-list">
+            </tbody>
+    </table>
+    <div id="status" class="status-loading">Conectando con los archivos de guerra...</div>
 </div>
 
 <script>
-    // PEGA AQUÍ EL LINK QUE COPIASTE DE GOOGLE SHEETS (EL QUE TERMINA EN output=csv)
-    const url = 'URL_DE_TU_GOOGLE_SHEET';
+    // Lista completa extraída de tu imagen
+    const clan = [
+        { n: "Envidiates", id: "5687437" },
+        { n: "Mauricio", id: "1947348" },
+        { n: "Sinister", id: "2598146" },
+        { n: "Develement", id: "2161095" },
+        { n: "Oso", id: "1485562" },
+        { n: "Claut", id: "358501" },
+        { n: "Melodiant", id: "235877" },
+        { n: "Oigres", id: "3552908" },
+        { n: "Hyoga", id: "2506886" },
+        { n: "Moska", id: "12362317" },
+        { n: "Drogao", id: "4489200" },
+        { n: "Sk8_Morro", id: "221290" },
+        { n: "Sharis", id: "4995759" },
+        { n: "Puni", id: "12723994" }
+    ];
 
-    async function cargarRanking() {
-        try {
-            const response = await fetch(url);
-            const data = await response.text();
-            const filas = data.split('\n');
-            let html = '';
+    async function fetchElo() {
+        const tbody = document.getElementById('player-list');
+        const status = document.getElementById('status');
+        
+        for (let p of clan) {
+            // Creamos la fila inmediatamente
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td class="name">VENÓN | ${p.n}</td>
+                <td class="elo" id="elo-${p.id}">...</td>
+                <td style="text-align: center;"><a href="https://www.aoe2insights.com/user/${p.id}/" target="_blank" class="btn-insights">VER ↗</a></td>
+            `;
+            tbody.appendChild(row);
 
-            // Saltamos la primera fila si tienes encabezados
-            for (let i = 0; i < filas.length; i++) {
-                const columnas = filas[i].split(',');
-                if (columnas.length >= 2) {
-                    html += `
-                        <div class="player-row">
-                            <span>${columnas[0]}</span>
-                            <span class="elo">${columnas[1]}</span>
-                        </div>`;
+            try {
+                // Usamos un proxy diferente para evitar el bloqueo de Netlify
+                const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://api.aoe2companion.com/api/profiles/' + p.id)}`);
+                const json = await response.json();
+                const data = JSON.parse(json.contents);
+                
+                let eloValue = "N/A";
+                if (data.ratings) {
+                    const rm = data.ratings.find(r => r.leaderboard_id === 3);
+                    if (rm) eloValue = rm.rating;
                 }
+                document.getElementById(`elo-${p.id}`).innerText = eloValue;
+            } catch (e) {
+                document.getElementById(`elo-${p.id}`).innerText = "Err";
             }
-            document.getElementById('tabla-ranking').innerHTML = html;
-        } catch (error) {
-            document.getElementById('tabla-ranking').innerHTML = "Error de conexión con la base de datos.";
         }
+        status.innerText = "Sincronización completada.";
     }
 
-    cargarRanking();
+    window.onload = fetchElo;
 </script>
 </body>
 </html>
