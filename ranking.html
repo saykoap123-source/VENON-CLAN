@@ -2,59 +2,71 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Ranking Venón</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ranking | Venón Clan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { background: #070707; color: white; font-family: sans-serif; display: flex; justify-content: center; padding-top: 50px; }
-        .card { background: #111; border: 1px solid #b30000; padding: 20px; border-radius: 8px; width: 300px; }
-        h2 { color: #d4af37; text-align: center; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        .row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #222; }
-        .elo { color: #00ffcc; font-weight: bold; }
+        body { background: #070707; color: #f2f2f2; font-family: 'Inter', sans-serif; margin: 0; padding: 100px 20px; }
+        nav { position: fixed; top: 0; width: 100%; height: 70px; background: #000; border-bottom: 2px solid #b30000; display: flex; align-items: center; justify-content: center; z-index: 1000; }
+        .container { max-width: 500px; margin: auto; background: #111; padding: 25px; border-radius: 12px; border: 1px solid #333; box-shadow: 0 0 20px rgba(179,0,0,0.2); }
+        h1 { font-family: 'Orbitron'; color: #d4af37; text-align: center; font-size: 1.4rem; margin-top: 0; }
+        .player-card { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #222; }
+        .name { font-weight: bold; color: #fff; }
+        .elo { font-family: 'Orbitron'; color: #00ffcc; font-size: 1.2rem; }
+        .status { font-size: 0.7rem; color: #666; text-transform: uppercase; margin-top: 20px; text-align: center; }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <h2>VENÓN CLAN</h2>
-    <div id="lista">Cargando guerreros...</div>
+<nav>
+    <div style="font-family: 'Orbitron'; color: #b30000; letter-spacing: 3px;">VENÓN CLAN</div>
+</nav>
+
+<div class="container">
+    <h1>RANKING RM 1V1</h1>
+    <div id="ranking-list">
+        </div>
+    <div class="status">Sincronizado con AoE2 Net API</div>
 </div>
 
 <script>
-    const jugadores = [
+    const clan = [
         { name: "Hera", id: "199325" },
         { name: "TheViper", id: "196240" },
         { name: "Envys", id: "401359" },
         { name: "Sinister", id: "2598146" }
     ];
 
-    async function obtenerRanking() {
-        const contenedor = document.getElementById('lista');
-        contenedor.innerHTML = ""; // Limpiar el "Cargando"
+    async function getStats() {
+        const list = document.getElementById('ranking-list');
+        list.innerHTML = "";
 
-        for (let p of jugadores) {
-            // Creamos el espacio en la tabla
-            const div = document.createElement('div');
-            div.className = 'row';
-            div.innerHTML = `<span>${p.name}</span><span id="p-${p.id}" class="elo">...</span>`;
-            contenedor.appendChild(div);
+        // Consultamos a todos los jugadores en una sola llamada para evitar bloqueos
+        const ids = clan.map(p => p.id).join(',');
+        const url = `https://api.allorigins.win/get?url=${encodeURIComponent('https://aoe2.net/api/leaderboard?game=age2&leaderboard_id=3&start=1&count=1&profile_ids=' + ids)}`;
 
-            try {
-                // Probamos con la API directa de AoE2.net (a veces el mirror sigue vivo para datos rápidos)
-                const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://aoe2.net/api/player/ratinghistory?game=age2&leaderboard_id=3&profile_id=' + p.id + '&count=1')}`);
-                const data = await res.json();
-                const stats = JSON.parse(data.contents);
+        try {
+            const response = await fetch(url);
+            const json = await response.json();
+            const data = JSON.parse(json.contents);
 
-                if (stats && stats.length > 0) {
-                    document.getElementById(`p-${p.id}`).innerText = stats[0].rating;
-                } else {
-                    document.getElementById(`p-${p.id}`).innerText = "Inactivo";
-                }
-            } catch (e) {
-                document.getElementById(`p-${p.id}`).innerText = "N/A";
-            }
+            clan.forEach(p => {
+                // Buscamos al jugador en la respuesta del leaderboard
+                const playerData = data.leaderboard.find(item => item.profile_id == p.id);
+                const rating = playerData ? playerData.rating : "N/A";
+
+                const row = document.createElement('div');
+                row.className = 'player-card';
+                row.innerHTML = `<span class="name">${p.name}</span><span class="elo">${rating}</span>`;
+                list.appendChild(row);
+            });
+
+        } catch (error) {
+            list.innerHTML = "<p style='text-align:center'>Error al conectar con el servidor.</p>";
         }
     }
 
-    obtenerRanking();
+    getStats();
 </script>
 </body>
 </html>
