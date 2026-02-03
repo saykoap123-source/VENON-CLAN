@@ -77,17 +77,17 @@
         header h1 { font-family: 'Cinzel', serif; font-size: clamp(3.5rem, 10vw, 6.5rem); letter-spacing: 20px; color: #fff; line-height: 1; }
         .hero-tagline { letter-spacing: 8px; color: var(--accent); font-weight: 700; margin: 20px 0; font-size: 1.2rem; text-shadow: 0 0 10px var(--accent-glow); }
 
-        /* --- CARRUSEL DE NOTICIAS GRANDE --- */
+        /* --- CARRUSEL DE NOTICIAS --- */
         .news-section { padding: 80px 5%; text-align: center; }
         .news-title { font-family: 'Cinzel', serif; font-size: 3rem; margin-bottom: 40px; letter-spacing: 12px; color: #fff; }
         
         .carousel-container {
             position: relative;
-            max-width: 1200px; /* Más ancho */
+            max-width: 1200px;
             margin: 0 auto;
             overflow: hidden;
             border: 2px solid var(--accent);
-            background: linear-gradient(145deg, rgba(20,20,20,0.9), rgba(5,5,5,1));
+            background: #000;
             border-radius: 8px;
             box-shadow: 0 0 30px rgba(255, 34, 0, 0.2);
         }
@@ -96,20 +96,34 @@
         
         .news-slide {
             min-width: 100%;
-            min-height: 450px; /* Más alto */
+            min-height: 500px;
             padding: 80px 10%;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background-image: radial-gradient(circle at center, rgba(255,34,0,0.05) 0%, transparent 70%);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        /* Contenedor de texto dentro del slide para asegurar legibilidad */
+        .slide-content {
+            position: relative;
+            z-index: 2;
+            background: rgba(0, 0, 0, 0.75);
+            padding: 40px;
+            border-radius: 4px;
+            border-left: 5px solid var(--accent);
+            backdrop-filter: blur(10px);
         }
         
         .news-slide h3 { 
             font-family: 'Cinzel', serif; 
             color: var(--accent); 
-            font-size: clamp(2rem, 5vw, 3.5rem); /* Título gigante */
+            font-size: clamp(2rem, 5vw, 3.5rem);
             margin-bottom: 25px;
             text-shadow: 0 0 20px var(--accent-glow);
             text-transform: uppercase;
@@ -189,18 +203,28 @@
         <div class="carousel-container">
             <button class="carousel-btn prev" onclick="moveSlide(-1)">&#10094;</button>
             <div class="carousel-track" id="carouselTrack">
-                <div class="news-slide">
-                    <h3>NUEVA ERA</h3>
-                    <p>Iniciamos el proceso de profesionalización. Venón no es solo un clan, es una armada lista para conquistar cada torneo en el que participemos.</p>
+                
+                <div class="news-slide" style="background-image: radial-gradient(circle, rgba(255,34,0,0.1), transparent);">
+                    <div class="slide-content">
+                        <h3>NUEVA ERA</h3>
+                        <p>Iniciamos el proceso de profesionalización. Venón no es solo un clan, es una armada lista para conquistar cada torneo en el que participemos.</p>
+                    </div>
                 </div>
-                <div class="news-slide">
-                    <h3>OS VS VENON</h3>
-                    <p>SHOWMATCH 7th February, 20 GMT, Nos vemos en twitch.</p>
+
+                <div class="news-slide" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('image_a6aafd.jpg'); background-size: contain;">
+                    <div class="slide-content">
+                        <h3>OS VS VENON</h3>
+                        <p>SHOWMATCH 7th February, 20 GMT, Nos vemos en Twitch para la batalla definitiva.</p>
+                    </div>
                 </div>
-                <div class="news-slide">
-                    <h3>DOMINIO AOE 2</h3>
-                    <p>Proximamente anunciaremos showmatch, torneos en los que nuestros jugadores participan y noticias relevantes.</p>
+
+                <div class="news-slide" style="background-image: radial-gradient(circle, rgba(255,34,0,0.1), transparent);">
+                    <div class="slide-content">
+                        <h3>DOMINIO AOE 2</h3>
+                        <p>Proximamente anunciaremos showmatch, torneos en los que nuestros jugadores participan y noticias relevantes.</p>
+                    </div>
                 </div>
+
             </div>
             <button class="carousel-btn next" onclick="moveSlide(1)">&#10095;</button>
         </div>
@@ -251,4 +275,3 @@
     </script>
 </body>
 </html>
-
