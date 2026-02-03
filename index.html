@@ -25,6 +25,30 @@
             overflow-x: hidden;
             line-height: 1.6;
         }
+        .social-container {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.btn-social {
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.btn-social:hover {
+    transform: scale(1.05);
+}
+
+/* Colores de marca */
+.twitch { background-color: #9146FF; }
+.instagram { background-color: #E1306C; }
+.discord { background-color: #5865F2; }
 
         /* --- EFECTO DE CENIZAS Y FONDO --- */
         .fire-container {
@@ -277,8 +301,14 @@
             
             container.appendChild(ash);
         }
+        <div class="social-container">
+        <a href="https://www.twitch.tv/sharis0308" target="_blank" class="btn-social twitch">Twitch</a>
+        <a href="https://www.instagram.com/venon.aoe/" target="_blank" class="btn-social instagram">Instagram</a>
+        <a href="https://discord.gg/JcGBasgD" target="_blank" class="btn-social discord">Discord</a>
+    </div>
     </script>
 </body>
 </html>
+
 
 
