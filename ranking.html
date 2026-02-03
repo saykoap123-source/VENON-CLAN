@@ -3,126 +3,409 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ranking Elite | VENÓN</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <title>VENÓN CLAN | 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
     <style>
-        :root { --red: #b30000; --gold: #d4af37; --bg: #050505; }
-        body { background: var(--bg); color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        
-        .clan-card { width: 100%; max-width: 450px; background: #111; border: 1px solid #333; border-radius: 15px; overflow: hidden; box-shadow: 0 0 25px rgba(179,0,0,0.4); }
-        .header { background: var(--red); padding: 20px; text-align: center; font-family: 'Orbitron'; font-size: 1.2rem; letter-spacing: 3px; border-bottom: 2px solid var(--gold); }
-        
-        .list-container { max-height: 600px; overflow-y: auto; } /* Scroll por si la lista crece */
-        
-        .player-row { display: flex; align-items: center; padding: 12px 20px; border-bottom: 1px solid #222; transition: 0.3s; justify-content: space-between; }
-        .player-row:hover { background: #1a1a1a; }
-        
-        .player-info { display: flex; align-items: center; }
-        .avatar { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--gold); margin-right: 15px; object-fit: cover; background: #222; }
-        .name { font-weight: bold; font-size: 1rem; color: #f0f0f0; }
-        
-        .btn-view { 
-            background: transparent; color: var(--gold); border: 1px solid var(--gold); 
-            text-decoration: none; padding: 6px 12px; border-radius: 4px; font-size: 0.75rem; 
-            font-weight: bold; text-transform: uppercase; transition: 0.3s;
+/* --- BOTÓN REGRESO "FIERCE" (FEROZ) --- */
+.btn-fierce-back {
+    position: fixed; /* Lo fijamos para que siempre sea visible */
+    top: 30px;
+    left: 30px;
+    z-index: 1000; /* Aseguramos que esté por encima de todo */
+    text-decoration: none;
+    cursor: pointer;
+
+    /* Estilo base del botón */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 25px 12px 20px; /* Ajuste para el icono */
+    background: linear-gradient(145deg, #1a1a1a, #0a0a0a); /* Fondo metálico oscuro */
+    border: 2px solid #330000; /* Borde oscuro rojizo */
+    border-radius: 5px;
+    
+    font-family: 'Cinzel', serif;
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #f0f0f0; /* Texto claro */
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4), inset 0 0 5px rgba(255, 34, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+
+    /* Aura inicial sutil */
+    box-shadow: 0 0 8px rgba(255, 68, 0, 0.3), 0 0 15px rgba(255, 68, 0, 0.1) inset;
+}
+
+.btn-fierce-back:before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border: 2px solid transparent;
+    border-image: linear-gradient(45deg, #ff4d00, #ff0000, #880000);
+    border-image-slice: 1;
+    border-radius: 8px; /* Un poco más grande que el botón para el aura */
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    pointer-events: none; /* Asegura que no interfiera con los clics */
+}
+
+/* Contenido para organizar texto e icono */
+.btn-fierce-back .btn-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Icono (un triángulo o flecha estilizada) */
+.btn-fierce-back .btn-icon {
+    width: 0;
+    height: 0;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-right: 12px solid #ff4d00; /* Color de fuego */
+    filter: drop-shadow(0 0 3px #ff4d00);
+    transition: transform 0.3s ease-in-out, border-right-color 0.3s ease-in-out;
+}
+
+/* Efecto al pasar el ratón */
+.btn-fierce-back:hover {
+    background: linear-gradient(145deg, #2a0000, #1a0000); /* Un poco más oscuro */
+    color: white;
+    transform: translateY(-3px) scale(1.02); /* Pequeño levantamiento y agrandamiento */
+    border-color: var(--venon-red);
+    box-shadow: 0 8px 25px rgba(255, 34, 0, 0.6), inset 0 0 10px rgba(255, 34, 0, 0.3); /* Sombra más intensa */
+}
+
+.btn-fierce-back:hover:before {
+    opacity: 1; /* Muestra el aura al pasar el ratón */
+    animation: fierce-aura-pulse 1.5s infinite alternate; /* Animación de aura pulsante */
+}
+
+.btn-fierce-back:hover .btn-icon {
+    border-right-color: white; /* Icono blanco al pasar el ratón */
+    transform: translateX(-3px) scale(1.1); /* Icono se mueve un poco */
+    filter: drop-shadow(0 0 5px white);
+}
+
+/* Animación del aura para el hover */
+@keyframes fierce-aura-pulse {
+    0% {
+        box-shadow: 0 0 10px rgba(255, 68, 0, 0.5), 0 0 20px rgba(255, 68, 0, 0.2);
+    }
+    100% {
+        box-shadow: 0 0 15px rgba(255, 68, 0, 0.8), 0 0 30px rgba(255, 68, 0, 0.4);
+    }
+}
+
+/* Media query para pantallas más pequeñas (móviles) */
+@media (max-width: 768px) {
+    .btn-fierce-back {
+        position: fixed; /* Mantenemos fixed para que siempre sea accesible */
+        top: 15px;
+        left: 50%;
+        transform: translateX(-50%); /* Centrado horizontal */
+        padding: 10px 20px;
+        font-size: 0.8em;
+        letter-spacing: 1px;
+    }
+}
+        :root {
+            /* Cambio de Dorado a Rojo Fuego */
+            --venon-red: #ff2200; 
+            --venon-glow: #ff4d00;
+            --venon-dark: #050505;
+            --accent-a: #ff3e3e;
+            --accent-b: #00c3ff;
+            --accent-c: #3eff8b;
         }
-        .btn-view:hover { background: var(--gold); color: black; box-shadow: 0 0 10px var(--gold); }
-        
-        /* Personalización del scroll */
-        .list-container::-webkit-scrollbar { width: 5px; }
-        .list-container::-webkit-scrollbar-thumb { background: var(--red); border-radius: 10px; }
+
+        body {
+            background-color: var(--venon-dark);
+            color: white;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 50px 20px;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- FONDO AOE STYLE --- */
+        .bg-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -3;
+            background: #000;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.2) contrast(1.2) grayscale(0.5); /* Más oscuro para que resalte el fuego */
+        }
+
+        #dust-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.4;
+        }
+
+        .overlay-vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(circle, rgba(0,0,0,0) 20%, rgba(0,0,0,0.95) 100%);
+        }
+
+        /* --- EFECTO DE FUEGO Y AURA --- */
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(3em, 12vw, 6em);
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 15px;
+            margin: 0;
+            position: relative;
+            /* El aura roja */
+            text-shadow: 
+                0 0 10px #ff0000,
+                0 0 20px #ff4d00,
+                0 0 40px #ff8800;
+            animation: fire-flicker 2s infinite alternate;
+            text-align: center;
+        }
+
+        @keyframes fire-flicker {
+            0% {
+                text-shadow: 0 0 15px #ff0000, 0 0 25px #ff4d00, 0 0 10px #ffae00;
+                transform: scale(1);
+            }
+            50% {
+                text-shadow: 0 0 25px #ff2200, 0 0 45px #ff4d00, 0 0 25px #ffae00;
+                transform: scale(1.02);
+                opacity: 0.9;
+            }
+            100% {
+                text-shadow: 0 0 12px #ff0000, 0 0 22px #ff4d00, 0 0 8px #ffae00;
+                transform: scale(0.99);
+            }
+        }
+
+        .subtitle {
+            color: #ff4d00;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            margin-bottom: 50px;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(255, 68, 0, 0.5);
+        }
+
+        /* --- UI COMPONENTS --- */
+        .section-header {
+            width: 100%;
+            max-width: 1100px;
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 25px;
+            margin: 50px 0 20px;
+            background: rgba(20, 5, 5, 0.9);
+            border-left: 6px solid var(--venon-red);
+            backdrop-filter: blur(10px);
+            box-sizing: border-box;
+            box-shadow: -10px 0 20px rgba(255, 34, 0, 0.2);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        .card {
+            background: rgba(20, 20, 20, 0.6);
+            border: 1px solid rgba(255, 34, 0, 0.15);
+            border-radius: 2px;
+            padding: 20px 10px;
+            text-align: center;
+            text-decoration: none;
+            color: #ccc;
+            transition: 0.4s;
+            backdrop-filter: blur(5px);
+        }
+
+        .card:hover {
+            background: rgba(40, 0, 0, 0.4);
+            border-color: var(--venon-red);
+            color: white;
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(255, 34, 0, 0.3);
+        }
+
+        .avatar {
+            width: 85px;
+            height: 85px;
+            margin: 0 auto 15px;
+            border: 2px solid var(--venon-red);
+            box-shadow: 0 0 10px rgba(255, 34, 0, 0.3);
+            overflow: hidden;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .name { font-weight: bold; font-size: 1.1em; display: block; margin-bottom: 5px; font-family: 'Cinzel', serif; }
+        .rank-label { font-size: 0.65em; color: var(--venon-red); letter-spacing: 2px; }
+
+        footer { margin-top: 100px; color: #551111; letter-spacing: 2px; font-size: 0.7em; }
     </style>
 </head>
 <body>
 
-    <div class="clan-card">
-        <div class="header">VENÓN CLAN RANKING</div>
-        <div class="list-container">
-
-            <div class="player-row">
-                <div class="player-info">
-                    <img src="https://www.aoe2insights.com/static/img/players/player_5687437.png" class="avatar" onerror="this.src='https://i.imgur.com/6VBx3io.png'">
-                    <span class="name">Envidiates</span>
-                </div>
-                <a href="https://www.aoe2insights.com/user/5687437/" target="_blank" class="btn-view">Check ELO</a>
-            </div>
-
-            <div class="player-row">
-                <div class="player-info">
-                    <img src="https://www.aoe2insights.com/static/img/players/player_1947348.png" class="avatar" onerror="this.src='https://i.imgur.com/6VBx3io.png'">
-                    <span class="name">Mauricioae13</span>
-                </div>
-                <a href="https://www.aoe2insights.com/user/1947348/" target="_blank" class="btn-view">Check ELO</a>
-            </div>
-
-            <div class="player-row">
-                <div class="player-info">
-                    <img src="https://www.aoe2insights.com/static/img/players/player_2598146.png" class="avatar" onerror="this.src='https://i.imgur.com/6VBx3io.png'">
-                    <span class="name">Sinister</span>
-                </div>
-                <a href="https://www.aoe2insights.com/user/2598146/" target="_blank" class="btn-view">Check ELO</a>
-            </div>
-
-            <div class="player-row">
-                <div class="player-info">
-                    <img src="https://www.aoe2insights.com/static/img/players/player_2161095.png" class="avatar" onerror="this.src='https://i.imgur.com/6VBx3io.png'">
-                    <span class="name">Develement</span>
-                </div>
-                <a href="https://www.aoe2insights.com/user/2161095/" target="_blank" class="btn-view">Check ELO</a>
-            </div>
-
-            <div class="player-row">
-                <div class="player-info">
-                    <img src="https://www.aoe2insights.com/static/img/players/player_1485562.png" class="avatar" onerror="this.src='https://i.imgur.com/6VBx3io.png'">
-                    <span class="name">Oso</span>
-                </div>
-                <a href="https://www.aoe2insights.com/user/1485562/" target="_blank" class="btn-view">Check ELO</a>
-            </div>
-
-            <div class="player-row">
-                <div class="player-info">
-                    <img src="https://www.aoe2insights.com/static/img/players/player_358501.png" class="avatar" onerror="this.src='https://i.imgur.com/6VBx3io.png'">
-                    <span class="name">Claut</span>
-                </div>
-                <a href="https://www.aoe2insights.com/user/358501/" target="_blank" class="btn-view">Check ELO</a>
-            </div>
-
-            <div class="player-row">
-                <div class="player-info">
-                    <img src="https://www.aoe2insights.com/static/img/players/player_235877.png" class="avatar" onerror="this.src='https://i.imgur.com/6VBx3io.png'">
-                    <span class="name">Melodiant</span>
-                </div>
-                <a href="https://www.aoe2insights.com/user/235877/" target="_blank" class="btn-view">Check ELO</a>
-            </div>
-
-            <div class="player-row">
-                <div class="player-info">
-                    <img src="https://www.aoe2insights.com/static/img/players/player_3552908.png" class="avatar" onerror="this.src='https://i.imgur.com/6VBx3io.png'">
-                    <span class="name">Oigres</span>
-                </div>
-                <a href="https://www.aoe2insights.com/user/3552908/" target="_blank" class="btn-view">Check ELO</a>
-            </div>
-
-            <div class="player-row">
-                <div class="player-info">
-                    <img src="https://www.aoe2insights.com/static/img/players/player_12362317.png" class="avatar" onerror="this.src='https://i.imgur.com/6VBx3io.png'">
-                    <span class="name">Moska</span>
-                </div>
-                <a href="https://www.aoe2insights.com/user/12362317/" target="_blank" class="btn-view">Check ELO</a>
-            </div>
-
-            <div class="player-row">
-                <div class="player-info">
-                    <img src="https://www.aoe2insights.com/static/img/players/player_4489200.png" class="avatar" onerror="this.src='https://i.imgur.com/6VBx3io.png'">
-                    <span class="name">Drogao</span>
-                </div>
-                <a href="https://www.aoe2insights.com/user/4489200/" target="_blank" class="btn-view">Check ELO</a>
-            </div>
-
-        </div>
+    <div class="bg-wrapper">
+        <video autoplay muted loop playsinline>
+            <source src="https://exit-status.com/assets/aoe2-bg.mp4" type="video/mp4">
+        </video>
     </div>
+    
+    <canvas id="dust-particles"></canvas>
+    <div class="overlay-vignette"></div>
 
-    <p style="margin-top: 20px; color: #555; font-size: 0.8rem;">VENÓN CLAN © 2026 - Datos por AoE2 Insights</p>
+    <h1>VENÓN</h1>
+    <div class="subtitle">Age Of Empires</div>
 
+    <div class="section-header" style="border-color: var(--venon-red);"><span>VENÓN A</span> <span id="cA"></span></div>
+    <div class="grid" id="gridA"></div>
+
+    <div class="section-header" style="border-color: var(--accent-b);"><span>VENÓN B</span> <span id="cB"></span></div>
+    <div class="grid" id="gridB"></div>
+
+    <div class="section-header" style="border-color: var(--accent-c);"><span>VENÓN C</span> <span id="cC"></span></div>
+    <div class="grid" id="gridC"></div>
+
+    <footer>BY DROGINHO • 2026</footer>
+
+    <script>
+        // --- SCRIPT DE POLVO (DUST) ---
+        const canvas = document.getElementById('dust-particles');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function initDust() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            particles = [];
+            for (let i = 0; i < 120; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2,
+                    speedX: (Math.random() - 0.5) * 0.3,
+                    speedY: Math.random() * 0.5 + 0.1,
+                    opacity: Math.random()
+                });
+            }
+        }
+
+        function drawDust() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                // Polvo ligeramente rojizo/naranja por el fuego
+                ctx.fillStyle = `rgba(255, 100, 50, ${p.opacity})`;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+                p.x += p.speedX;
+                p.y -= p.speedY; 
+                if (p.y < 0) p.y = canvas.height;
+            });
+            requestAnimationFrame(drawDust);
+        }
+
+        window.addEventListener('resize', initDust);
+        initDust();
+        drawDust();
+
+        // --- DATOS JUGADORES ---
+        const grupoA = ["Envidiates", "Mauricio", "Sinister", "Develement", "Oso", "Themariach1"];
+        const grupoB = ["Puni", "Claut", "Melodiant", "Sigfrido", "Oigres", "Betox", "Hyoga", "MX", "Diente", "Moska", "Droginho"];
+        
+        const jugadores = [
+            { n: "Envidiates", f: "https://shared.fastly.steamstatic.com/community_assets/images/items/2873080/33e549955162361a7684873731207e3cce5d66ad.gif", a: "401359" },
+            { n: "Mauricio", f: "https://avatars.fastly.steamstatic.com/e3449d111905114ae5275136509bbf8e7b601876_full.jpg", a: "1947348" },
+            { n: "Sinister", f: "https://avatars.fastly.steamstatic.com/06a3d76132587b4b537b5a637cd9435b54e81700_full.jpg", a: "2598146" },
+            { n: "Develement", f: "https://avatars.fastly.steamstatic.com/f941e31c4db48f0d22bd211e246c96308e0c35fc_full.jpg", a: "2161095" },
+            { n: "Oso", f: "https://avatars.steamstatic.com/d1e9caf4dbe9be39d5bb3c8f0433543c358f1a59_full.jpg", a: "1485562" },
+            { n: "Themariach1", f: "https://avatars.steamstatic.com/bd074a60e1a66c5645950fe55bffb6ebb024edd4_full.jpg", a: "14023447" },
+            { n: "Puni", f: "", a: "12723994" },
+            { n: "Claut", f: "https://shared.fastly.steamstatic.com/community_assets/images/items/588650/e8fea73af196ab1f70e529ff0269d6d1867fa9f8.gif", a: "358501" },
+            { n: "Melodiant", f: "https://avatars.fastly.steamstatic.com/7c272c6a77ca57478b075b1ef849d39517259465_full.jpg", a: "235877" },
+            { n: "Sigfrido", f: "https://avatars.fastly.steamstatic.com/72789abfbdf55ae8e229c9782c871d8a90bb783b_full.jpg", a: "5687437" },
+            { n: "Oigres", f: "https://avatars.fastly.steamstatic.com/dbc1a61fbaf2e15b0daccc6975123fedb7d80d28_full.jpg", a: "3552908" },
+            { n: "Betox", f: "https://avatars.fastly.steamstatic.com/f753eddbda8fc223abacfb39fb0a4a7117509a7f_full.jpg", a: "2969449" },
+            { n: "Hyoga", f: "https://avatars.fastly.steamstatic.com/7342f9c73492615e5c414df489d4c955891581fa_full.jpg", a: "2506886" },
+            { n: "MX", f: "", a: "13322178" },
+            { n: "Diente", f: "https://avatars.steamstatic.com/3901c35e0cafbc94594ac42296380325e6601a4c_full.jpg", a: "1556559" },
+            { n: "Moska", f: "https://avatars.fastly.steamstatic.com/d206fb0e26ed00d7129351ec901c0d9e259d76e9_full.jpg", a: "12362317" },
+            { n: "Craft", f: "https://avatars.steamstatic.com/95d8f1c00bbdc43e289e494f3dad027a6f930ac4_full.jpg", a: "4337228" },
+            { n: "Paquita", f: "https://avatars.steamstatic.com/ac7761be39b0c29805df78243daef6f8292ede8e_full.jpg", a: "2454373" },
+            { n: "Droginho", f: "https://avatars.fastly.steamstatic.com/f6225df6f709c62956f4d85202685223075c3ca9_full.jpg", a: "4489200" },
+            { n: "Sk8_Morro", f: "https://avatars.steamstatic.com/48655428708d49d79b7fbd1c743d61562c079ac9_full.jpg", a: "221290" },
+            { n: "Botzanga", f: "https://avatars.steamstatic.com/4e0bd3bc5f1e4160bce1624699f1c153990f91e0_full.jpg", a: "3210173" },
+            { n: "Tomachellas", f: "https://avatars.steamstatic.com/9cf9acd9d5a49ccf5b595d35667b652ed5f8c7cb_full.jpg", a: "2101683" },
+            { n: "Chaild", f: "", a: "3125195" },
+            { n: "Pan Da", f: "", a: "3572834" }
+        ];
+
+        function makeCard(p) {
+            const img = p.f ? `<img src="${p.f}">` : `<div style="font-size:2em">🛡️</div>`;
+            return `
+                <a href="https://www.aoe2insights.com/user/${p.a}/" target="_blank" class="card">
+                    <div class="avatar">${img}</div>
+                    <span class="name">${p.n}</span>
+                    <span class="rank-label">INSIGHTS</span>
+                </a>
+            `;
+        }
+
+        let a=0, b=0, c=0;
+        jugadores.forEach(j => {
+            if(grupoA.includes(j.n)) { document.getElementById('gridA').innerHTML += makeCard(j); a++; }
+            else if(grupoB.includes(j.n)) { document.getElementById('gridB').innerHTML += makeCard(j); b++; }
+            else { document.getElementById('gridC').innerHTML += makeCard(j); c++; }
+        });
+        document.getElementById('cA').innerText = a;
+        document.getElementById('cB').innerText = b;
+        document.getElementById('cC').innerText = c;
+    </script>
+  <a href="index.html" class="btn-fierce-back">
+    <div class="btn-content">
+        <span class="btn-text"> I N I C I O</span>
+        <span class="btn-icon"></span>
+    </div>
+</a>
 </body>
 </html>
